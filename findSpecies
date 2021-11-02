@@ -1,0 +1,19 @@
+#!/bin/bash
+#This file shows speciesDetails file to help the user to find added species(s) based upon search criteria
+
+echo "Please enter the details that you want to search from:"
+read searchParam
+result=`grep -i -n "$searchParam" speciesDetails`
+if [ -z "$result" ]
+then
+    echo "No results found"
+else
+    echo "The result(s) are the following"
+    echo "--------------------------------"
+    echo "Species name: Location: Date:  Email"
+    echo "--------------------------------"
+    echo "$result"
+    echo "--------------------------------"
+fi
+read -n1 -rsp $'Press and key to continue back to the main menu \n'
+#wait for a character press to continue back to the main menu

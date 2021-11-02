@@ -1,0 +1,46 @@
+#!/bin/bash
+# Adding businesses script file
+echo "--------"
+echo "Please enter the Species name"
+read speciesName
+while [ -z "$speciesName" ] #while loop to take care of a null entry
+do
+	echo "Species Name is empty, please re-enter a value"
+	read speciesName
+done
+echo $'\n Enter species location using the nearest Eir Code: '
+read location #variable for location
+while [ -z "$location" ] #while loop to take care of a null entry
+do
+	echo "Species location is empty, please re-enter a value"
+        read location
+	valid='[a-zA-Z][0-9][0-9][0-9a-zA-Z]{4}' #variable for valid Eir code format (letter, number, number, alphanumeric X 4
+	if [[ $location =~ $valid ]] #checks if location variable is valid
+	then
+		echo $'\nEirCode is Correct'
+		sleep 1
+	else
+		echo $'\nPlease enter a correct format Eir Code (e.g. A11XXXX)' #if not valid then user warning to enter valid format and maintained within loop
+		read location	
+	fi
+done
+date=`date` #assigns the date command to the date variable
+echo $'\nPlease enter your email:'
+read emailaddress
+while [ -z "$emailaddress" ] || [ "$emailaddress" != "${emailaddress/ /}" ]
+do
+	echo "The email address is empty or contains spaces ($emailaddress), please re-enter a value"
+	read emailaddress
+	valid2="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$" #variable for valid email format (any number of letters/symbols/numbers, an @ symbol, any number of letters/numbers, a dot, and at least 2 but not more than 4 letters
+	if [[ $email =~ $valid2 ]] #checks if email variable is valid
+	then
+		echo $'\nEmail address is Correct'
+                sleep 1
+	else
+		echo $'\nPlease enter a correct email format (e.g. text@text.com)' #if not valid then user warning to enter valid format and maintained within loop
+	fi
+done
+
+echo "The following details have been added"
+echo "$speciesName ":" $location ": "$date ": "$emailaddress"
+echo "$speciesName":"$location":"$date":"$emailaddress" >> speciesDetails

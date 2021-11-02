@@ -1,0 +1,41 @@
+#!/bin/bash
+#main menu script
+
+function clearSlate  #function clears the display after 1 second
+{
+    sleep 1
+    clear
+}
+
+while :
+do
+    cat <<EOF
+ 
+ Welcome. Please Choose from one of the following
+ (1) "Add a new Species"
+ (2) "Remove an existing Species"
+ (3) "Search for a Species"
+ (4) "E-mail Discoverer"
+ (5) "quit application" 
+ Enter a number:
+EOF
+
+    read  Reply
+    case "$Reply" in "1") ./addSpecies  #call the addSpecies script in order to add a new species
+			  ;;
+                      "2") ./removeSpecies #remove an existing species by calling the rmSpecies script
+			  ;;
+                      "3") ./findSpecies #find an exisiting species by calling the findSpecies script
+			  ;;
+                      "4") ./emailDiscoverer
+			  #email discoverer(s) of the species from the address book
+                          ;;
+                      "5") echo "Goodbye and thank you"
+			  exit
+			  ;;
+                      *) echo "invalid option"
+			 clearSlate #waits for 1s and clear the display to avoid  clutter
+			 ;;
+    esac
+    sleep 1
+done

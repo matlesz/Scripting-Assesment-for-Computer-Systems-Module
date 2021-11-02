@@ -1,0 +1,59 @@
+#!/bin/bash
+#script for emailing discoverers
+
+function clearSlate()  #function clears the display after 1 second
+{
+    sleep 1
+    clear
+}
+while :
+do
+cat <<EOF
+	Email menu
+	(1) "Email a single Discoverer"
+	(2) "Email all Discoverer"
+	(3) "quit emailing"
+	Enter a selection:
+EOF
+
+	read  ReplyEmail
+	case "$ReplyEmail" in "1") #code to email a single discoverer
+				echo "Search for the discoverer by entering any details"
+			  	read searchParam
+			  	result=`grep -i -n "$searchParam" speciesDetails`
+			  	echo "$result"
+			  	echo "which line number do you wish to email: or q to quit"
+			  	read line
+			  	if [ "$line" == "q" ]
+			  	then : #do nothing
+			  	else
+			      		emailaddress=$(awk -F ":" -v awk_line=$line 'FNR == awk_line {print $6}' speciesDetails)
+			      		echo "Please enter the message subject"
+			      		read subject
+			      		echo "Please enter the message you would like to send to the Recorderer(s)"
+			      		read message
+			      		echo "$message" | mail -s "$subject" "$emailaddress"
+			      		echo "email sent to $emailaddress"
+			  	fi 
+                          	;;
+		       		"2")#code to email all recorderers
+			   	echo "Please enter the message subject"
+			   	read subject
+			   	echo "Please enter the message you would like to send to the Recorderer(s)"
+			   	read message
+			   	while read -r line
+			   	do
+			       	emailaddress=$(echo $line| awk -F ":" '{print $6}')
+			       	#pipe the contents of the line to awk to print the contents of column 6 and assign this to the variable emailaddress
+			       	echo "$message" | mail -s "$subject" "$emailaddress"
+			       	echo "email sent to $emailaddress"
+                           	done < speciesDetails
+			   	;;
+                       		"3") echo "Goodbye and thanks"
+				exit #exit the emailing
+			   	;;
+                       		*) echo "invalid option"
+			  	clearSlate #clear the display to avoid clutter
+			  	;;
+	esac
+done
